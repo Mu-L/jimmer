@@ -1,6 +1,6 @@
 package org.babyfish.jimmer.spring.cfg;
 
-import org.babyfish.jimmer.jackson.ImmutableModule;
+import org.babyfish.jimmer.jackson.v2.ImmutableModule;
 import org.babyfish.jimmer.spring.repository.config.JimmerRepositoriesConfig;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

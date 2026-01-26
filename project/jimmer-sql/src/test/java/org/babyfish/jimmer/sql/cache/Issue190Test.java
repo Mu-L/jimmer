@@ -1,7 +1,5 @@
 package org.babyfish.jimmer.sql.cache;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.babyfish.jimmer.jackson.ImmutableModule;
 import org.babyfish.jimmer.meta.ImmutableProp;
 import org.babyfish.jimmer.meta.ImmutableType;
 import org.babyfish.jimmer.runtime.Internal;
@@ -18,6 +16,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+
+import static org.babyfish.jimmer.jackson.codec.JsonCodec.Detector.jsonCodec;
 
 public class Issue190Test extends AbstractQueryTest {
 
@@ -85,9 +85,6 @@ public class Issue190Test extends AbstractQueryTest {
 
     private static class ObjectBinder implements SimpleBinder<Object, Object> {
 
-        private static final ObjectMapper MAPPER = new ObjectMapper()
-                .registerModule(new ImmutableModule());
-
         private final ImmutableType type;
 
         private final String prefix;
@@ -135,7 +132,7 @@ public class Issue190Test extends AbstractQueryTest {
             Internal.requiresNewDraftContext(ctx -> {
                 try {
                     for (Object key : keys) {
-                        resultMap.put(key, MAPPER.readValue(map.get(prefix + key), type.getJavaClass()));
+                        resultMap.put(key, jsonCodec().readerFor(type.getJavaClass()).read(map.get(prefix + key)));
                     }
                 } catch (Exception ex) {
                     Assertions.fail(ex);

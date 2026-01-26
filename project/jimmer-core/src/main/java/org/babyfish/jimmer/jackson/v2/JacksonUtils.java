@@ -1,4 +1,4 @@
-package org.babyfish.jimmer.jackson;
+package org.babyfish.jimmer.jackson.v2;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ArrayType;
@@ -7,40 +7,12 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import org.babyfish.jimmer.meta.ImmutableProp;
 import org.babyfish.jimmer.meta.ModelException;
-import org.babyfish.jimmer.meta.TargetLevel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 
 public class JacksonUtils {
-
-    public static JavaType getJacksonType(ImmutableProp prop) {
-        ConverterMetadata metadata = prop.getConverterMetadata();
-        if (metadata != null) {
-            return metadata.getTargetJacksonType();
-        }
-        if (prop.isReferenceList(TargetLevel.OBJECT) || prop.isScalarList()) {
-            return CollectionType.construct(
-                    List.class,
-                    null,
-                    null,
-                    null,
-                    SimpleType.constructUnsafe(prop.getElementClass())
-            );
-        }
-        try {
-            return getJacksonType(prop.getGenericType());
-        } catch (RuntimeException ex) {
-            throw new ModelException(
-                    "Illegal property \"" +
-                            "prop" +
-                            "\", cannot create jackson property: " +
-                            ex.getMessage(),
-                    ex
-            );
-        }
-    }
 
     public static JavaType getJacksonType(Type type) {
         if (type instanceof ParameterizedType) {
@@ -68,10 +40,10 @@ public class JacksonUtils {
             throw new IllegalArgumentException("Parameterized type must be collection, list, set or map");
         }
         if (type instanceof TypeVariable<?>) {
-            return getJacksonType(((TypeVariable<?>)type).getBounds()[0]);
+            return getJacksonType(((TypeVariable<?>) type).getBounds()[0]);
         }
         if (type instanceof WildcardType) {
-            return getJacksonType(((WildcardType)type).getUpperBounds()[0]);
+            return getJacksonType(((WildcardType) type).getUpperBounds()[0]);
         }
         if (type instanceof GenericArrayType) {
             GenericArrayType arrType = (GenericArrayType) type;
@@ -105,7 +77,7 @@ public class JacksonUtils {
     ) {
         Class<? extends Annotation> curAnnotationType = annotation.annotationType();
         if (curAnnotationType == ctx.annotationType) {
-            ctx.set((A)annotation);
+            ctx.set((A) annotation);
             return;
         }
         if (!ctx.push(curAnnotationType)) {

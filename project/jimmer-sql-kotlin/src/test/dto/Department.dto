@@ -2,7 +2,6 @@ export org.babyfish.jimmer.sql.kt.model.hr.Department
     -> package org.babyfish.jimmer.sql.kt.model.hr.dto
 
 import testpkg.annotations.{ConsiderAs, Type, Serializable }
-import com.fasterxml.jackson.databind.annotation.{JsonSerialize, JsonDeserialize}
 import org.babyfish.jimmer.sql.kt.model.hr.{MagicStringSerializer, MagicStringDeserializer}
 import com.alibaba.excel.annotation.ExcelProperty
 
@@ -46,8 +45,10 @@ specification DepartmentSpecification2 {
 DepartmentView2 {
     #allScalars
 
-    @JsonSerialize(using = MagicStringSerializer::class)
-    @JsonDeserialize(using = MagicStringDeserializer::class)
+    @tools.jackson.databind.annotation.JsonSerialize(using = MagicStringSerializer3::class)
+    @tools.jackson.databind.annotation.JsonDeserialize(using = MagicStringDeserializer3::class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = MagicStringSerializer::class)
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = MagicStringDeserializer::class)
     @ExcelProperty(value = ["tag1", "tag2"])
     name
 }

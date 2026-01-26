@@ -1,3 +1,4 @@
+
 plugins {
     `kotlin-convention`
     alias(libs.plugins.buildconfig)
@@ -5,20 +6,20 @@ plugins {
 
 dependencies {
     api(libs.jspecify)
-    implementation(libs.javax.validation.api)
-    api(libs.jackson.databind)
-    compileOnly(libs.jackson3.databind)
     api(libs.kotlin.reflect)
-    implementation(libs.jackson.datatype.jsr310)
+    implementation(libs.javax.validation.api)
     implementation(libs.kotlin.stdlib)
     compileOnly(libs.mapstruct)
+    compileOnly(libs.bundles.jackson)
 
+    testImplementation(libs.bundles.jackson)
     testImplementation(libs.mapstruct)
     testImplementation(libs.lombok)
 
     testAnnotationProcessor(projects.jimmerApt)
     testAnnotationProcessor(libs.lombok)
     testAnnotationProcessor(libs.mapstruct.processor)
+    testAnnotationProcessor(libs.bundles.jackson)
 }
 
 tasks.withType<JavaCompile>().configureEach {

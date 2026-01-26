@@ -1,5 +1,7 @@
 package org.babyfish.jimmer.jackson;
 
+import org.babyfish.jimmer.jackson.v2.ImmutableModule;
+
 public class ImmutableModuleRequiredException extends RuntimeException {
 
     public ImmutableModuleRequiredException() {

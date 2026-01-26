@@ -38,8 +38,10 @@ class Context(
     val isBuddyIgnoreResourceGeneration: Boolean =
         environment.options["jimmer.buddy.ignoreResourceGeneration"]?.trim() == "true"
 
+    val jackson3 = jackson3(resolver, environment)
+
     val jacksonTypes: JacksonTypes =
-        if (jackson3(resolver, environment)) {
+        if (jackson3) {
             JacksonTypes(
                 jsonIgnore = ClassName("com.fasterxml.jackson.annotation", "JsonIgnore"),
                 jsonValue = ClassName("com.fasterxml.jackson.annotation", "JsonValue"),
@@ -47,13 +49,13 @@ class Context(
                 jsonProperty = ClassName("com.fasterxml.jackson.annotation", "JsonProperty"),
                 jsonPropertyOrder = ClassName("com.fasterxml.jackson.annotation", "JsonPropertyOrder"),
                 jsonCreator = ClassName("com.fasterxml.jackson.annotation", "JsonCreator"),
-                jsonSerializer = ClassName("tools.jackson.databind", "JsonSerializer"),
+                jsonSerializer = ClassName("tools.jackson.databind", "ValueSerializer"),
                 jsonSerialize = ClassName("tools.jackson.databind.annotation", "JsonSerialize"),
                 jsonDeserialize = ClassName("tools.jackson.databind.annotation", "JsonDeserialize"),
                 jsonPojoBuilder = ClassName("tools.jackson.databind.annotation", "JsonPOJOBuilder"),
                 jsonNaming = ClassName("tools.jackson.databind.annotation", "JsonNaming"),
                 jsonGenerator = ClassName("tools.jackson.core", "JsonGenerator"),
-                serializeProvider = ClassName("tools.jackson.databind", "SerializerProvider")
+                serializeProvider = ClassName("tools.jackson.databind", "SerializationContext")
             )
         } else {
             JacksonTypes(

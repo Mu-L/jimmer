@@ -1,4 +1,4 @@
-package org.babyfish.jimmer.jackson;
+package org.babyfish.jimmer.jackson.v2;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

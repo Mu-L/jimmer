@@ -1,4 +1,4 @@
-package org.babyfish.jimmer.jackson;
+package org.babyfish.jimmer.jackson.v2;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 

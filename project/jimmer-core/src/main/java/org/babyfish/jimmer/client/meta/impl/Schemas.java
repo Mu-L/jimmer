@@ -1,16 +1,17 @@
 package org.babyfish.jimmer.client.meta.impl;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 import org.babyfish.jimmer.client.meta.Schema;
+import org.babyfish.jimmer.jackson.codec.JsonCodec;
+import org.babyfish.jimmer.jackson.codec.JsonWriter;
+import org.babyfish.jimmer.jackson.codec.SharedAttributesCustomization;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Set;
+
+import static java.util.Collections.singletonMap;
 
 public class Schemas {
 
@@ -18,36 +19,31 @@ public class Schemas {
 
     private static final Object GROUPS = new Object();
 
-    private static final ObjectMapper READ_SERVICES_MAPPER =
-            new ObjectMapper()
-                    .setDefaultAttributes(
-                            ContextAttributes.getEmpty().withSharedAttribute(IGNORE_DEFINITIONS, true)
-                    );
+    private static final JsonCodec<?> READ_SERVICES_JSON_CODEC = JsonCodec.Detector.jsonCodec()
+            .withCustomizations(new SharedAttributesCustomization(singletonMap(IGNORE_DEFINITIONS, true)));
 
-    private static final ObjectWriter WRITER = new ObjectMapper().writerWithDefaultPrettyPrinter();
+    private static final JsonWriter WRITER = JsonCodec.Detector.jsonCodec().writer().withDefaultPrettyPrinter();
 
-    private Schemas() {}
-
-    public static void writeTo(Schema schema, Writer writer) throws IOException {
-        WRITER.writeValue(writer, schema);
+    private Schemas() {
     }
 
-    public static Schema readFrom(Reader reader) throws IOException {
+    public static void writeTo(Schema schema, Writer writer) throws Exception {
+        WRITER.write(writer, schema);
+    }
+
+    public static Schema readFrom(Reader reader) throws Exception {
         return readFrom(reader, null);
     }
 
-    public static Schema readFrom(Reader reader, Set<String> groups) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        if (groups != null && !groups.isEmpty()) {
-            mapper.setDefaultAttributes(
-                ContextAttributes.getEmpty().withSharedAttribute(GROUPS, groups)
-            );
-        }
-        return mapper.readValue(reader, SchemaImpl.class);
+    public static Schema readFrom(Reader reader, Set<String> groups) throws Exception {
+        return JsonCodec.Detector.jsonCodec()
+                .withCustomizations(new SharedAttributesCustomization(singletonMap(GROUPS, groups)))
+                .readerFor(SchemaImpl.class)
+                .read(reader);
     }
 
-    public static Schema readServicesFrom(Reader reader) throws IOException {
-        return READ_SERVICES_MAPPER.readValue(reader, SchemaImpl.class);
+    public static Schema readServicesFrom(Reader reader) throws Exception {
+        return READ_SERVICES_JSON_CODEC.readerFor(SchemaImpl.class).read(reader);
     }
 
     @SuppressWarnings("unchecked")
@@ -55,7 +51,7 @@ public class Schemas {
         if (elementGroups == null) {
             return true;
         }
-        Set<String> allowedGroups = (Set<String>)ctx.getAttribute(GROUPS);
+        Set<String> allowedGroups = (Set<String>) ctx.getAttribute(GROUPS);
         if (allowedGroups == null) {
             return true;
         }

@@ -7,6 +7,11 @@ public class ImmutableModule3 extends SimpleModule {
     public static final String MODULE_ID = ImmutableModule3.class.getName();
 
     @Override
+    public Object getRegistrationId() {
+        return MODULE_ID;
+    }
+
+    @Override
     public String getModuleName() {
         return MODULE_ID;
     }

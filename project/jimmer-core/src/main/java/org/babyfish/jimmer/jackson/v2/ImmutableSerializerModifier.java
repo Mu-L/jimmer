@@ -1,10 +1,10 @@
-package org.babyfish.jimmer.jackson;
+package org.babyfish.jimmer.jackson.v2;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import org.babyfish.jimmer.impl.util.StringUtil;
+import org.babyfish.jimmer.jackson.ImmutableProps;
 import org.babyfish.jimmer.meta.ImmutableProp;
 import org.babyfish.jimmer.meta.ImmutableType;
 

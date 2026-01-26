@@ -1,6 +1,6 @@
 package org.babyfish.jimmer.spring.cfg;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.babyfish.jimmer.jackson.codec.JsonCodec;
 import org.babyfish.jimmer.spring.cloud.SpringCloudExchange;
 import org.babyfish.jimmer.sql.runtime.MicroServiceExchange;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,8 +15,8 @@ public class MicroServiceExchangeConfig {
     @Bean
     public MicroServiceExchange microServiceExchange(
             RestTemplate restTemplate,
-            ObjectMapper mapper
+            JsonCodec<?> jsonCodec
     ) {
-        return new SpringCloudExchange(restTemplate, mapper);
+        return new SpringCloudExchange(restTemplate, jsonCodec);
     }
 }

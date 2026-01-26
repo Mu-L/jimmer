@@ -1,9 +1,6 @@
 package org.babyfish.jimmer;
 
-import org.babyfish.jimmer.jackson.JacksonJsonCodec;
-import org.babyfish.jimmer.jackson.v3.JacksonJsonCodec3;
-import org.babyfish.jimmer.json.codec.JsonCodec;
-import org.babyfish.jimmer.json.codec.JsonDeserializer;
+import org.babyfish.jimmer.jackson.codec.JsonCodec;
 import org.babyfish.jimmer.meta.*;
 import org.babyfish.jimmer.runtime.DraftSpi;
 import org.babyfish.jimmer.runtime.ImmutableSpi;
@@ -13,9 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class ImmutableObjects {
-
-    private static final JsonCodec JSON_CODEC;
-
     private ImmutableObjects() {
     }
 
@@ -360,7 +354,11 @@ public class ImmutableObjects {
      * @return JSON string
      */
     public static String toString(Object immutable) {
-        return JSON_CODEC.serialize(immutable);
+        try {
+            return JsonCodec.Detector.jsonCodec().writer().writeAsString(immutable);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Can't serialize object", e);
+        }
     }
 
     /**
@@ -370,11 +368,19 @@ public class ImmutableObjects {
      * @return Deserialized object
      */
     public static <I> I fromString(Class<I> type, String json) {
-        return jsonCodec().deserialize(json, type);
+        try {
+            return JsonCodec.Detector.jsonCodec().readerFor(type).read(json);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Can't deserialize object ", e);
+        }
     }
 
-    public static <I> I fromString(Class<I> type, String json, @Nullable JsonDeserializer deserializer) {
-        return (deserializer != null ? deserializer : jsonCodec()).deserialize(json, type);
+    public static <I> I fromString(Class<I> type, String json, @Nullable JsonCodec<?> jsonCodec) {
+        try {
+            return (jsonCodec != null ? jsonCodec : JsonCodec.Detector.jsonCodec()).readerFor(type).read(json);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Can't deserialize object ", e);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -537,31 +543,5 @@ public class ImmutableObjects {
                 }
             }
         });
-    }
-
-    private static JsonCodec jsonCodec() {
-        if (JSON_CODEC == null) {
-            throw new IllegalStateException("Jackson is required");
-        }
-        return JSON_CODEC;
-    }
-
-    private static boolean classExists(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (ClassNotFoundException ex) {
-            return false;
-        }
-    }
-
-    static {
-        if (classExists("tools.jackson.databind.ObjectMapper")) {
-            JSON_CODEC = new JacksonJsonCodec3();
-        } else if (classExists("com.fasterxml.jackson.databind.ObjectMapper")) {
-            JSON_CODEC = new JacksonJsonCodec();
-        } else {
-            JSON_CODEC = null;
-        }
     }
 }
