@@ -1,7 +1,9 @@
 export org.babyfish.jimmer.sql.model.hr.Employee
     -> package org.babyfish.jimmer.sql.model.hr.dto
 
-import org.babyfish.jimmer.sql.model.hr.{ MagicStringSerializer, MagicStringDeserializer }
+import org.babyfish.jimmer.sql.model.hr.{
+    MagicStringSerializer, MagicStringSerializer3, MagicStringDeserializer, MagicStringDeserializer3
+}
 
 EmployeeView {
     id

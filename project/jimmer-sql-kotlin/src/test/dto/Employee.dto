@@ -2,8 +2,10 @@ export org.babyfish.jimmer.sql.kt.model.hr.Employee
     -> package org.babyfish.jimmer.sql.kt.model.hr.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import org.babyfish.jimmer.sql.kt.model.hr.{MagicStringSerializer, MagicStringDeserializer}
-import org.babyfish.jimmer.kt.dto.{ KotlinDto, KotlinDtoImmutability }
+import org.babyfish.jimmer.sql.model.hr.{
+    MagicStringSerializer, MagicStringSerializer3, MagicStringDeserializer, MagicStringDeserializer3
+}
+import org.babyfish.jimmer.kt.dto.{KotlinDto, KotlinDtoImmutability}
 
 specification EmployeeSpecificationForIssue735 {
     like/i(employeeName)
