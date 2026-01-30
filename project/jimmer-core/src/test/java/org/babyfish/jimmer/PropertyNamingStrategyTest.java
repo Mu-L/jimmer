@@ -3,14 +3,14 @@ package org.babyfish.jimmer;
 import org.babyfish.jimmer.jackson.codec.JsonCodec;
 import org.babyfish.jimmer.model.AssociationInput;
 import org.babyfish.jimmer.model.AssociationInputDraft;
-import org.babyfish.jimmer.support.PropertyNamingCustomization;
+import org.babyfish.jimmer.jackson.codec.PropertyNamingCustomization;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static org.babyfish.jimmer.jackson.codec.JsonCodec.jsonCodec;
-import static org.babyfish.jimmer.support.PropertyNamingCustomization.PropertyNaming;
+import static org.babyfish.jimmer.jackson.codec.PropertyNamingCustomization.PropertyNaming;
 
 public class PropertyNamingStrategyTest {
 

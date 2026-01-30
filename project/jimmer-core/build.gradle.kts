@@ -9,7 +9,7 @@ dependencies {
     api(libs.kotlin.reflect)
     implementation(libs.javax.validation.api)
     implementation(libs.kotlin.stdlib)
-    compileOnly(libs.mapstruct)
+    testImplementation(libs.mapstruct)
     compileOnly(libs.bundles.jackson)
 
     testImplementation(libs.bundles.jackson)

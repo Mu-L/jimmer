@@ -3,12 +3,12 @@ package org.babyfish.jimmer;
 import org.babyfish.jimmer.jackson.codec.JsonCodec;
 import org.babyfish.jimmer.model.TreeNode;
 import org.babyfish.jimmer.model.TreeNodeDraft;
-import org.babyfish.jimmer.support.PropertyNamingCustomization;
+import org.babyfish.jimmer.jackson.codec.PropertyNamingCustomization;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.babyfish.jimmer.jackson.codec.JsonCodec.jsonCodec;
-import static org.babyfish.jimmer.support.PropertyNamingCustomization.PropertyNaming.SNAKE_CASE;
+import static org.babyfish.jimmer.jackson.codec.PropertyNamingCustomization.PropertyNaming.SNAKE_CASE;
 
 public class TreeNodeTest {
 

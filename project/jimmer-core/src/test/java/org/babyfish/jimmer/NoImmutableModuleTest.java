@@ -1,6 +1,5 @@
 package org.babyfish.jimmer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.babyfish.jimmer.jackson.ImmutableModuleRequiredException;
 import org.babyfish.jimmer.model.BookDraft;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +10,7 @@ import static org.babyfish.jimmer.jackson.codec.JsonCodec.jsonCodecWithoutImmuta
 public class NoImmutableModuleTest {
 
     @Test
-    public void test() throws JsonProcessingException {
+    public void test() throws Exception {
         Throwable ex = Assertions.assertThrows(Throwable.class, () -> {
             jsonCodecWithoutImmutableModule().writer().writeAsString(
                     BookDraft.$.produce(draft -> {
