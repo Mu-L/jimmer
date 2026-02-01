@@ -1,5 +1,6 @@
 package org.babyfish.jimmer.sql.time;
 
+import org.babyfish.jimmer.jackson.v2.JsonCodecV2;
 import org.babyfish.jimmer.sql.ast.Predicate;
 import org.babyfish.jimmer.sql.ast.SqlTimeUnit;
 import org.babyfish.jimmer.sql.ast.table.WeakJoin;
@@ -15,13 +16,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 
-import static org.babyfish.jimmer.jackson.codec.JsonCodec.jsonCodec;
-
 public class SqlTimeFunctionTest extends AbstractQueryTest {
 
     private static String toString(Object o) {
         try {
-            return jsonCodec().writer().writeAsString(o);
+            return new JsonCodecV2().writer().writeAsString(o);
         } catch (Exception e) {
             Assertions.fail();
             return "";
